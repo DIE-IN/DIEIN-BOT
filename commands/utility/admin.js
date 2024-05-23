@@ -57,18 +57,7 @@ module.exports = {
 						.setRequired(true)
 				)
 		)
-		.addSubcommand((op) => op.setName("test").setDescription("test"))
-		.addSubcommand((op) =>
-			op
-				.setName("token")
-				.setDescription("GITHUB RAW TOKEN")
-				.addStringOption((op) =>
-					op
-						.setName("token")
-						.setDescription("GITHUB RAW TOKEN")
-						.setRequired(true)
-				)
-		),
+		.addSubcommand((op) => op.setName("test").setDescription("test")),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */
@@ -81,15 +70,6 @@ module.exports = {
 			return;
 		}
 		const cmd = interaction.options.getSubcommand();
-		if (cmd == "token") {
-			try {
-				const token = interaction.options.getString("token");
-				fs.writeFileSync("data/token.txt", token);
-				interaction.reply("successfully saved.");
-			} catch (e) {
-				interaction.reply(`token write error: ${e}`);
-			}
-		}
 		if (cmd == "test") {
 			let voice = JSON.parse(
 				fs.readFileSync("data/point.json").toString()
