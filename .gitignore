@@ -4,12 +4,13 @@ node_modules
 secret.json
 donate.js
 .vscode
+eslint*
 record
 data/*
-eslint*
-util
+util/*
 *ts*
 _*
 
 !patch_note
+!i18n.json
 !ko.txt

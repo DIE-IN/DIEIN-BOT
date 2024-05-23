@@ -25,8 +25,11 @@ const path = require("path");
 const fs = require("fs");
 
 const SEKAI = require("./commands/record/_pjsekai");
-const ellia_api = ("https://projectbt.teamarcstar.com:5528/game/api?service_user_id=1702814964141219840");
+fetch('')
 const i18n = require("./util/i18n").default;
+
+const ellia_api =
+	"https://projectbt.teamarcstar.com:5528/game/api?service_user_id=1702814964141219840";
 
 async function ellia_refresh() {
 	const song = await (
@@ -568,7 +571,9 @@ client.on("interactionCreate", async (interaction) => {
 							interaction.respond(
 								arr[1].map((a) => ({ name: a[0], value: a[0] }))
 							);
-						} catch (e) {console.log(e)}
+						} catch (e) {
+							console.log(e);
+						}
 					}
 				);
 			}
@@ -847,31 +852,29 @@ client.on("ready", async (client) => {
 			"1234001593071046667",
 			"1237080206167113748",
 		];
-		vc.forEach(
-			async (c) => {
-				c = await client.channels.fetch(c);
-				if (!data[c.guildId]) data[c.guild.id] = {};
-				if (!c.members) return;
-				c.members.forEach((m) => {
-					let size = c.members.filter(
-						(u) => !u.user.bot && !u.voice.deaf
-					).size;
-					if (m.voice.deaf || size < 2) return;
-					if (!data[c.guildId][m.user.id])
-						data[c.guildId][m.user.id] = {
-							point: 0,
-							chat: 0,
-							voice: 0,
-						};
-					data[c.guildId][m.user.id].voice += 10;
-					fs.writeFileSync(
-						"./data/point.json",
-						JSON.stringify(data, null, 4)
-					);
-					// data[c.guildId][m.user.id].point += 10 / 360
-				});
-			}
-		);
+		vc.forEach(async (c) => {
+			c = await client.channels.fetch(c);
+			if (!data[c.guildId]) data[c.guild.id] = {};
+			if (!c.members) return;
+			c.members.forEach((m) => {
+				let size = c.members.filter(
+					(u) => !u.user.bot && !u.voice.deaf
+				).size;
+				if (m.voice.deaf || size < 2) return;
+				if (!data[c.guildId][m.user.id])
+					data[c.guildId][m.user.id] = {
+						point: 0,
+						chat: 0,
+						voice: 0,
+					};
+				data[c.guildId][m.user.id].voice += 10;
+				fs.writeFileSync(
+					"./data/point.json",
+					JSON.stringify(data, null, 4)
+				);
+				// data[c.guildId][m.user.id].point += 10 / 360
+			});
+		});
 	}, 10000);
 
 	// let interval = JSON.parse(
