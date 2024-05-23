@@ -1,0 +1,15 @@
+DIEIN.code-workspace
+patch_note.js
+node_modules
+secret.json
+donate.js
+.vscode
+record
+data/*
+eslint*
+util
+*ts*
+_*
+
+!patch_note
+!ko.txt
