@@ -1,136 +1,136 @@
 {
-	"NotAdmin": {
-		"ko": "관리자가 아닙니다.",
-		"en-US": "Not Administrator",
-		"ja": "管理者ではありません。"
-	},
-	"reply": {
-		"ko": "답장",
-		"en-US": "Reply",
-		"ja": "返事"
-	},
-	"edit": {
-		"ko": "수정",
-		"en-US": "edit",
-		"ja": "修整"
-	},
-	"level": {
-		"ko": "레벨",
-		"en-US": "Level",
-		"ja": "レベル"
-	},
-	"exp": {
-		"ko": "경험치",
-		"en-US": "EXP"
-	},
-	"total_exp": {
-		"ko": "누적 경험치",
-		"en-US": "Total EXP",
-		"ja": "累積 EXP"
-	},
-	"hasCustomRole": {
-		"ko": "님은 커스텀 역할권 보유중입니다.",
-		"en-US": "$ has custom role.",
-		"ja": "さんはカスタム役割権を保有中です。"
-	},
-	"notCustomRole": {
-		"ko": "님은 커스텀 역할권 보유중이 아닙니다.",
-		"en-US": " not has custom role.",
-		"ja": "さんはカスタム役割権を保有中ではありません。"
-	},
-	"s level": {
-		"ko": "님의 레벨",
-		"en-US": "'s Level",
-		"ja": "さんのレベル"
-	},
-	"pjsekai": {
-		"ko": "프로세카",
-		"en-US": "pjsekai",
-		"ja": "プロセカ"
-	},
-	"character": {
-		"ko": "캐릭터",
-		"en-US": "Character",
-		"ja": "キャラクター"
-	},
-	"name": {
-		"ko": "이름",
-		"en-US": "Name",
-		"ja": "名前"
-	},
-	"lastname": {
-		"ko": "성",
-		"en-US": "last name",
-		"ja": "姓"
-	},
-	"unit": {
-		"ko": "유닛",
-		"en-US": "Unit",
-		"ja": "ユニット"
-	},
-	"gender": {
-		"ko": "성별",
-		"en-US": "Gender",
-		"ja": "性別"
-	},
-	"height": {
-		"ko": "키",
-		"en-US": "height",
-		"ja": "身長"
-	},
-	"breastSize": {
-		"ko": "가슴 크기",
-		"en-US": "Breast Size",
-		"ja": "カップサイズ"
-	},
-	"Prev": {
-		"ko": "이전",
-		"en-US": "Prev",
-		"ja": "前"
-	},
-	"Next": {
-		"ko": "다음",
-		"en-US": "Next",
-		"ja": "次"
-	},
-	"Train": {
-		"ko": "특훈",
-		"en-US": "Train",
-		"ja": "特訓"
-	},
-	"downloading": {
-		"ko": "데이터를 다운로드하는 중입니다. 잠시 후 다시 시도해주세요.",
-		"en-US": "Downloading data. Please try again in a moment.",
-		"ja": "データをダウンロードしています。 しばらくしてからもう一度お試しください。"
-	},
-	"song": {
-		"ko": "악곡",
-		"en-US": "Music",
-		"ja": "楽曲"
-	},
-	"composer": {
-		"ko": "작곡",
-		"en-US": "composer",
-		"ja": "作曲"
-	},
-	"lyricist": {
-		"ko": "작사",
-		"en-US": "lyricist",
-		"ja": "作詞"
-	},
-	"arranger": {
-		"ko": "편곡",
-		"en-US": "arranger",
-		"ja": "編曲"
-	},
-	"releasedAt": {
-		"ko": "투고일",
-		"en-US": "releasedAt",
-		"ja": "投稿日"
-	},
-	"publishedAt": {
-		"ko": "실장일",
-		"en-US": "publishedAt",
-		"ja": "解放日"
-	}
+    "NotAdmin": {
+        "ko": "관리자가 아닙니다.",
+        "en-US": "Not Administrator",
+        "ja": "管理者ではありません。"
+    },
+    "reply": {
+        "ko": "답장",
+        "en-US": "Reply",
+        "ja": "返事"
+    },
+    "edit": {
+        "ko": "수정",
+        "en-US": "edit",
+        "ja": "修整"
+    },
+    "level": {
+        "ko": "레벨",
+        "en-US": "Level",
+        "ja": "レベル"
+    },
+    "exp": {
+        "ko": "경험치",
+        "en-US": "EXP"
+    },
+    "total_exp": {
+        "ko": "누적 경험치",
+        "en-US": "Total EXP",
+        "ja": "累積 EXP"
+    },
+    "hasCustomRole": {
+        "ko": "님은 커스텀 역할권 보유중입니다.",
+        "en-US": "$ has custom role.",
+        "ja": "さんはカスタム役割権を保有中です。"
+    },
+    "notCustomRole": {
+        "ko": "님은 커스텀 역할권 보유중이 아닙니다.",
+        "en-US": " not has custom role.",
+        "ja": "さんはカスタム役割権を保有中ではありません。"
+    },
+    "s level": {
+        "ko": "님의 레벨",
+        "en-US": "'s Level",
+        "ja": "さんのレベル"
+    },
+    "pjsekai": {
+        "ko": "프로세카",
+        "en-US": "pjsekai",
+        "ja": "プロセカ"
+    },
+    "character": {
+        "ko": "캐릭터",
+        "en-US": "Character",
+        "ja": "キャラクター"
+    },
+    "name": {
+        "ko": "이름",
+        "en-US": "Name",
+        "ja": "名前"
+    },
+    "lastname": {
+        "ko": "성",
+        "en-US": "last name",
+        "ja": "姓"
+    },
+    "unit": {
+        "ko": "유닛",
+        "en-US": "Unit",
+        "ja": "ユニット"
+    },
+    "gender": {
+        "ko": "성별",
+        "en-US": "Gender",
+        "ja": "性別"
+    },
+    "height": {
+        "ko": "키",
+        "en-US": "height",
+        "ja": "身長"
+    },
+    "breastSize": {
+        "ko": "가슴 크기",
+        "en-US": "Breast Size",
+        "ja": "カップサイズ"
+    },
+    "Prev": {
+        "ko": "이전",
+        "en-US": "Prev",
+        "ja": "前"
+    },
+    "Next": {
+        "ko": "다음",
+        "en-US": "Next",
+        "ja": "次"
+    },
+    "Train": {
+        "ko": "특훈",
+        "en-US": "Train",
+        "ja": "特訓"
+    },
+    "downloading": {
+        "ko": "데이터를 다운로드하는 중입니다. 잠시 후 다시 시도해주세요.",
+        "en-US": "Downloading data. Please try again in a moment.",
+        "ja": "データをダウンロードしています。 しばらくしてからもう一度お試しください。"
+    },
+    "song": {
+        "ko": "악곡",
+        "en-US": "Music",
+        "ja": "楽曲"
+    },
+    "composer": {
+        "ko": "작곡",
+        "en-US": "composer",
+        "ja": "作曲"
+    },
+    "lyricist": {
+        "ko": "작사",
+        "en-US": "lyricist",
+        "ja": "作詞"
+    },
+    "arranger": {
+        "ko": "편곡",
+        "en-US": "arranger",
+        "ja": "編曲"
+    },
+    "releasedAt": {
+        "ko": "투고일",
+        "en-US": "releasedAt",
+        "ja": "投稿日"
+    },
+    "publishedAt": {
+        "ko": "실장일",
+        "en-US": "publishedAt",
+        "ja": "解放日"
+    }
 }

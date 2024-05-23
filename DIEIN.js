@@ -25,7 +25,19 @@ const path = require("path");
 const fs = require("fs");
 
 const SEKAI = require("./commands/record/_pjsekai");
-fetch('')
+(async () =>
+	fs.writeFileSync(
+		"./util/i18n.json",
+		JSON.stringify(
+			await (
+				await fetch(
+					"https://raw.githubusercontent.com/DIE-IN/DIEIN-BOT/master/util/i18n.json"
+				)
+			).json(),
+			null,
+			4
+		)
+	))();
 const i18n = require("./util/i18n").default;
 
 const ellia_api =
