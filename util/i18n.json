@@ -132,5 +132,9 @@
         "ko": "실장일",
         "en-US": "publishedAt",
         "ja": "解放日"
+    },
+    "incorrectHex": {
+        "ko": "색 헥스 코드의 형식이 올바르지 않습니다.",
+        "en-US": "The color hex code is not formatted correctly."
     }
 }

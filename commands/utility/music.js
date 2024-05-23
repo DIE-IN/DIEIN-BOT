@@ -36,92 +36,89 @@ module.exports = {
 	 */
 	async execute(interaction) {
 		if (interaction.options.getSubcommand() === "재생") {
-			await interaction.deferReply().then(async (m) => {
-				async function play(queue, song) {
-					await ytdl
-						.getInfo(song.url)
-						.then(async (videos) => {
-							let video = videos.videoDetails;
-							let uploader = video.author;
-							function truncateString(
-								str = String(),
-								numLines = Number()
-							) {
-								const lines = str.split("\n");
-								if (lines.length <= numLines) {
-									return str;
-								}
-								const truncatedLines = lines.slice(0, numLines);
-								return truncatedLines.join("\n");
+			const m = await interaction.deferReply();
+			async function play(queue, song) {
+				await ytdl
+					.getInfo(song.url)
+					.then(async (videos) => {
+						let video = videos.videoDetails;
+						let uploader = video.author;
+						function truncateString(
+							str = String(),
+							numLines = Number()
+						) {
+							const lines = str.split("\n");
+							if (lines.length <= numLines) {
+								return str;
 							}
-							let color = (
-								await fac(song.thumbnail, {
-									algorithm: "dominant",
-								})
-							).hex;
-							let embed = new EmbedBuilder()
-								.setAuthor({
-									name: uploader.name,
-									url: uploader.channel_url,
-									iconURL: uploader.thumbnails[0].url,
-								})
-								.setTitle(video.title)
-								.setTimestamp(Date.parse(video.uploadDate))
-								.setImage(song.thumbnail)
-								.setURL(song.url)
-								.setFooter({
-									text: song.formattedDuration,
-								})
-								.addFields({
-									name: "신청자",
-									value: `[${song.member.displayName}](discord://-/users/${song.user.id})`,
-								});
-							if (video.description)
-								embed.setDescription(
-									truncateString(
-										video.description.replaceAll(
-											"\n\n",
-											"\n"
-										),
-										5
-									) + `\n[...더보기](${song.url})`
-								);
-							if (color) embed.setColor(color);
-							m.edit({ embeds: [embed] });
-						})
-						.catch((e) => {
-							console.log(e);
-						});
-				}
-
-				function add(queue, song) {
-					let embed = new EmbedBuilder().setTitle("Mari Playlist");
-					queue.songs.map((song) => {
-						embed.addFields({
-							name: `[${song.name}](${song.url})`,
-							value: `[${song.member.displayName}](discord://-/users/${song.user.id})`,
-						});
-					});
-					m.edit({ embeds: [embed] });
-				}
-				interaction.client.distube.removeAllListeners("playSong");
-				interaction.client.distube.removeAllListeners("addSong");
-				interaction.client.distube.addListener("playSong", play);
-				interaction.client.distube.addListener("addSong", add);
-				interaction.client.distube
-					.play(
-						interaction.member.voice.channel,
-						interaction.options.getString("제목", true),
-						{
-							member: interaction.member,
-							textChannel: interaction.channel,
+							const truncatedLines = lines.slice(0, numLines);
+							return truncatedLines.join("\n");
 						}
-					)
+						let color = (
+							await fac(song.thumbnail, {
+								algorithm: "dominant",
+							})
+						).hex;
+						let embed = new EmbedBuilder()
+							.setAuthor({
+								name: uploader.name,
+								url: uploader.channel_url,
+								iconURL: uploader.thumbnails[0].url,
+							})
+							.setTitle(video.title)
+							.setTimestamp(Date.parse(video.uploadDate))
+							.setImage(song.thumbnail)
+							.setURL(song.url)
+							.setFooter({
+								text: song.formattedDuration,
+							})
+							.addFields({
+								name: "신청자",
+								value: `[${song.member.displayName}](discord://-/users/${song.user.id})`,
+							});
+						if (video.description)
+							embed.setDescription(
+								truncateString(
+									video.description.replaceAll("\n\n", "\n"),
+									5
+								) + `\n[...더보기](${song.url})`
+							);
+						if (color) embed.setColor(color);
+						m.edit({ embeds: [embed] });
+					})
 					.catch((e) => {
-						m.edit(String(e));
+						console.log(e);
 					});
-			});
-		} else if (interaction.options.getSubcommand() === "스킵") {
+			}
+			function add(queue, song) {
+				let embed = new EmbedBuilder().setTitle("Mari Playlist");
+				queue.songs.map((song) => {
+					embed.addFields({
+						name: `[${song.name}](${song.url})`,
+						value: `[${song.member.displayName}](discord://-/users/${song.user.id})`,
+					});
+				});
+				m.edit({ embeds: [embed] });
+			}
+			interaction.client.distube.removeAllListeners("playSong");
+			interaction.client.distube.removeAllListeners("addSong");
+			interaction.client.distube.addListener("playSong", play);
+			interaction.client.distube.addListener("addSong", add);
+			interaction.client.distube
+				.play(
+					interaction.member.voice.channel,
+					interaction.options.getString("제목", true),
+					{
+						member: interaction.member,
+						textChannel: interaction.channel,
+					}
+				)
+				.catch((e) => {
+					m.edit(String(e));
+				});
+			return;
+		}
+		if (interaction.options.getSubcommand() === "스킵") {
 			const queue = interaction.client.distube.getQueue(interaction);
 			if (!queue)
 				return interaction.reply({ ephemeral: true, content: "X" });
@@ -130,10 +127,13 @@ module.exports = {
 				interaction.reply(
 					`<@${interaction.member.id}>님이 스킵하였습니다. ${song.name} 재생합니다.`
 				);
+				return;
 			} catch (e) {
 				interaction.reply({ ephemeral: true, content: String(e) });
+				return;
 			}
-		} else if (interaction.options.getSubcommand() === "종료") {
+		}
+		if (interaction.options.getSubcommand() === "종료") {
 			const queue = interaction.client.distube.getQueue(interaction);
 			if (!queue)
 				return interaction.reply({ ephemeral: true, content: "X" });
@@ -141,6 +141,7 @@ module.exports = {
 			interaction.reply(
 				`<@${interaction.member.id}>님이 장비를 정지하였습니다.`
 			);
+			return;
 		}
 	},
 };

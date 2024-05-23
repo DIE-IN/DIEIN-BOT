@@ -25,6 +25,7 @@ const path = require("path");
 const fs = require("fs");
 
 const SEKAI = require("./commands/record/_pjsekai");
+if (Config.MODE == "PROD") {
 (async () =>
 	fs.writeFileSync(
 		"./util/i18n.json",
@@ -38,6 +39,7 @@ const SEKAI = require("./commands/record/_pjsekai");
 			4
 		)
 	))();
+}
 const i18n = require("./util/i18n").default;
 
 const ellia_api =
@@ -459,7 +461,7 @@ client.on("interactionCreate", async (interaction) => {
 		let user = interaction.targetUser;
 		user.displayName = interaction.member.displayName;
 		if (interaction.commandName.startsWith("커스텀 역할권 ")) {
-			fs.readFile("data/custom.json", (err, data) => {
+			fs.readFile("data/custom_role.json", (err, data) => {
 				let cmd = interaction.commandName.replace("커스텀 역할권 ", "");
 				let role = JSON.parse(data.toString());
 				role = role.role;
@@ -469,7 +471,7 @@ client.on("interactionCreate", async (interaction) => {
 					role[guild.id][user.id][0] = 0;
 					role[guild.id][user.id][1] = "";
 					fs.writeFileSync(
-						"data/custom.json",
+						"data/custom_role.json",
 						JSON.stringify({ role: role }, null, 4)
 					);
 				}
@@ -491,7 +493,7 @@ client.on("interactionCreate", async (interaction) => {
 						if (role[guild.id][user.id][0] < 1) {
 							role[guild.id][user.id][0] += 1;
 							fs.writeFileSync(
-								"data/custom.json",
+								"data/custom_role.json",
 								JSON.stringify({ role: role }, null, 4)
 							);
 							interaction.reply({
@@ -544,7 +546,7 @@ client.on("interactionCreate", async (interaction) => {
 								});
 							}
 							fs.writeFileSync(
-								"data/custom.json",
+								"data/custom_role.json",
 								JSON.stringify({ role: role }, null, 4)
 							);
 						} else {

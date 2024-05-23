@@ -53,6 +53,7 @@ module.exports = {
 			{
 				inline: true,
 				name: "OS",
+				// eslint-disable-next-line no-undef
 				value: `${process.platform} ${process.arch}`,
 			},
 			{

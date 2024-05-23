@@ -4,6 +4,7 @@ const {
 	EmbedBuilder,
 } = require("discord.js");
 const fs = require("fs");
+const { default: i18n } = require("../../util/i18n");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -126,6 +127,7 @@ module.exports = {
 	 * @param {CommandInteraction} interaction
 	 */
 	async execute(interaction) {
+		const locale = interaction.locale;
 		fs.readFile("data/custom_role.json", async (err, data) => {
 			let user = interaction.user;
 			user.displayName = interaction.member.displayName;
@@ -221,10 +223,10 @@ module.exports = {
 			if (interaction.options.getSubcommand() === "설정") {
 				if (role[guild.id][user.id][0] > 0) {
 					let name = interaction.options.getString("이름");
-					let	erase = interaction.options.getBoolean("제거");
-					let	color = interaction.options.getString("색");
-					let	icon = interaction.options.getAttachment("아이콘");
-					if (icon) icon = icon.url
+					let erase = interaction.options.getBoolean("제거");
+					let color = interaction.options.getString("색");
+					let icon = interaction.options.getAttachment("아이콘");
+					if (icon) icon = icon.url;
 					if (color) {
 						if (color[0] !== "#" || color.length !== 7) {
 							if (color.length === 6) {
@@ -232,8 +234,7 @@ module.exports = {
 							} else {
 								interaction.reply({
 									ephemeral: true,
-									content:
-										"색 헥스 코드의 형식이 올바르지 않습니다.",
+									content: await i18n("incorrectHex", locale),
 								});
 								return;
 							}
@@ -314,11 +315,16 @@ module.exports = {
 								);
 								return;
 							})
-							.catch((e) => {
+							.catch(async (e) => {
+								if (`${e}`.includes("ColorConvert")) {
+									interaction.editReply(
+										await i18n("incorrectHex", locale)
+									);
+									return;
+								}
 								interaction.editReply({
 									content: `${e}`,
 								});
-								console.log(e);
 								return;
 							});
 					}
