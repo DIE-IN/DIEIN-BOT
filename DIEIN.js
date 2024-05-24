@@ -25,22 +25,7 @@ const path = require("path");
 const fs = require("fs");
 
 const SEKAI = require("./commands/record/_pjsekai");
-if (Config.MODE == "PROD") {
-(async () =>
-	fs.writeFileSync(
-		"./util/i18n.json",
-		JSON.stringify(
-			await (
-				await fetch(
-					"https://raw.githubusercontent.com/DIE-IN/DIEIN-BOT/master/util/i18n.json"
-				)
-			).json(),
-			null,
-			4
-		)
-	))();
-}
-const i18n = require("./util/i18n").default;
+let i18n = require("./util/i18n.js").default;
 
 const ellia_api =
 	"https://projectbt.teamarcstar.com:5528/game/api?service_user_id=1702814964141219840";
@@ -461,7 +446,8 @@ client.on("interactionCreate", async (interaction) => {
 		let user = interaction.targetUser;
 		user.displayName = interaction.member.displayName;
 		if (interaction.commandName.startsWith("커스텀 역할권 ")) {
-			fs.readFile("data/custom_role.json", (err, data) => {
+			await interaction.deferReply({ ephemeral: true });
+			fs.readFile("data/custom_role.json", async (err, data) => {
 				let cmd = interaction.commandName.replace("커스텀 역할권 ", "");
 				let role = JSON.parse(data.toString());
 				role = role.role;
@@ -477,18 +463,20 @@ client.on("interactionCreate", async (interaction) => {
 				}
 				if (cmd === "확인") {
 					if (role[guild.id][user.id][0] > 0) {
-						interaction.reply({
-							content: `${user.displayName}${i18n("hasCustomRole", locale)}`,
+						await interaction.editReply({
+							content: `${user.displayName}${await i18n("hasCustomRole", locale)}`,
 							ephemeral: true,
 						});
+						return;
 					} else {
-						interaction.reply({
-							content: `${user.displayName}${i18n("notCustomRole", locale)}`,
+						await interaction.editReply({
+							content: `${user.displayName}${await i18n("notCustomRole", locale)}`,
 							ephemeral: true,
 						});
+						return;
 					}
-					return;
-				} else if (cmd === "지급") {
+				}
+				if (cmd === "지급") {
 					if (interaction.member.permissions.has("ADMINISTRATOR")) {
 						if (role[guild.id][user.id][0] < 1) {
 							role[guild.id][user.id][0] += 1;
@@ -496,22 +484,25 @@ client.on("interactionCreate", async (interaction) => {
 								"data/custom_role.json",
 								JSON.stringify({ role: role }, null, 4)
 							);
-							interaction.reply({
-								content: `${user.displayName}님에게 커스텀 역할권을 지급했습니다.`,
+							interaction.editReply({
+								content: `${user.displayName}${await i18n('giveRole', locale)}`,
 								ephemeral: true,
 							});
+							return;
 						} else {
-							interaction.reply({
+							interaction.editReply({
 								ephemeral: true,
 								content: `${user.displayName}님은 이미 커스텀 역할권을 보유중입니다.`,
 							});
+							return;
 						}
 					}
 					return;
-				} else if (cmd === "제거") {
+				}
+				if (cmd === "제거") {
 					if (interaction.member.permissions.has("ADMINISTRATOR")) {
 						if (role[guild.id][user.id][0] > 0) {
-							role[guild.id][user.id][0] -= 1;
+							role[guild.id][user.id][0] = 0;
 							if (role[guild.id][user.id][1] !== "") {
 								let userRole =
 									interaction.guild.roles.cache.get(
@@ -521,26 +512,26 @@ client.on("interactionCreate", async (interaction) => {
 								if (userRole) {
 									userRole
 										.delete()
-										.then(() => {
-											interaction.reply({
+										.then(async () => {
+											await interaction.editReply({
 												content: `${user.displayName}님의 커스텀 역할권과 커스텀 역할을 제거했습니다.\n제거된 역할: ${userRole.name} (${userRole.id})`,
 												ephemeral: true,
 											});
 										})
-										.catch(() => {
-											interaction.reply({
+										.catch(async () => {
+											await interaction.editReply({
 												content: `${user.displayName}님의 커스텀 역할권을 제거했습니다.\n권한 부족으로 커스텀 역할(<@&${userRole.id}>)을 제거하지 못했습니다.`,
 												ephemeral: true,
 											});
 										});
 								} else {
-									interaction.reply({
+									interaction.editReply({
 										content: `${user.displayName}님의 커스텀 역할권을 제거했습니다.`,
 										ephemeral: true,
 									});
 								}
 							} else {
-								interaction.reply({
+								interaction.editReply({
 									content: `${user.displayName}님의 커스텀 역할권을 제거했습니다.`,
 									ephemeral: true,
 								});
@@ -550,10 +541,11 @@ client.on("interactionCreate", async (interaction) => {
 								JSON.stringify({ role: role }, null, 4)
 							);
 						} else {
-							interaction.reply({
+							interaction.editReply({
 								ephemeral: true,
-								content: `${user.displayName}${i18n("notCustomRole", locale)}`,
+								content: `${user.displayName}${await i18n("notCustomRole", locale)}`,
 							});
+							return;
 						}
 					}
 					return;

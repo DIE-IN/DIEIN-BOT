@@ -71,15 +71,15 @@ module.exports = {
 		const next = Math.round(7 * (x+1) * 1.26 ** ((x+1) * 0.5 - 2) + (x+1) ** 3 - (x+1) ** 2.933104); // prettier-ignore
 		let expp = exp - curret;
 		const embed = new EmbedBuilder()
-			.setTitle(`${member.displayName}${i18n("s level", locale)}`)
+			.setTitle(`${member.displayName}${await i18n("s level", locale)}`)
 			.addFields(
-				{ name: `${i18n("level", locale)}`, value: `${x}` },
+				{ name: `${await i18n("level", locale)}`, value: `${x}` },
 				{
-					name: `${i18n("exp", locale)}`,
+					name: `${await i18n("exp", locale)}`,
 					value: `${"<:skyblue_bar:1240162060655001610>".repeat(Math.round((expp / (next - curret)) * 14))}${"<:gray_bar:1240162448032403507>".repeat(Math.round(14 - (expp / (next - curret)) * 14))} ${expp}/${next - curret} (${((expp / (next - curret)) * 100).toFixed(2)}%)`,
 				},
 				{
-					name: `${i18n("total_exp", locale)}`,
+					name: `${await i18n("total_exp", locale)}`,
 					value: `${"<:skyblue_bar:1240162060655001610>".repeat(Math.round((exp / next) * 14))}${"<:gray_bar:1240162448032403507>".repeat(Math.round(14 - (exp / next) * 14))} ${exp}/${next} (${((exp / next) * 100).toFixed(2)}%)`,
 				}
 				// { name: "레벨업 필요 경험치", value: `${Math.round(next) - Math.round(curret) - exp}` }

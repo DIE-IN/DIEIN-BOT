@@ -127,6 +127,7 @@ module.exports = {
 	 * @param {CommandInteraction} interaction
 	 */
 	async execute(interaction) {
+		console.log(interaction)
 		const locale = interaction.locale;
 		fs.readFile("data/custom_role.json", async (err, data) => {
 			let user = interaction.user;
@@ -222,6 +223,7 @@ module.exports = {
 			}
 			if (interaction.options.getSubcommand() === "설정") {
 				if (role[guild.id][user.id][0] > 0) {
+					await interaction.deferReply();
 					let name = interaction.options.getString("이름");
 					let erase = interaction.options.getBoolean("제거");
 					let color = interaction.options.getString("색");
@@ -232,7 +234,7 @@ module.exports = {
 							if (color.length === 6) {
 								color = "#" + color;
 							} else {
-								interaction.reply({
+								interaction.editReply({
 									ephemeral: true,
 									content: await i18n("incorrectHex", locale),
 								});
@@ -267,7 +269,6 @@ module.exports = {
 							.setColor(color);
 						return { embeds: [embed] };
 					}
-					await interaction.deferReply();
 					let set = {
 						name: name,
 						position: 25,
@@ -293,11 +294,18 @@ module.exports = {
 								);
 								return;
 							})
-							.catch((e) => {
-								interaction.editReply({
-									content: `봇의 권한이 부족합니다. 서버 관리자에게 문의해주세요.`,
-								});
-								return;
+							.catch(async (e) => {
+								if (`${e}`.includes("ColorConvert")) {
+									interaction.editReply(
+										await i18n("incorrectHex", locale)
+									);
+									return;
+								} else {
+									interaction.editReply({
+										content: `${e}`,
+									});
+									return;
+								}
 							});
 					} else {
 						interaction.guild.roles.cache
@@ -321,11 +329,12 @@ module.exports = {
 										await i18n("incorrectHex", locale)
 									);
 									return;
+								} else {
+									interaction.editReply({
+										content: `${e}`,
+									});
+									return;
 								}
-								interaction.editReply({
-									content: `${e}`,
-								});
-								return;
 							});
 					}
 				} else {

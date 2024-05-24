@@ -135,6 +135,14 @@
     },
     "incorrectHex": {
         "ko": "색 헥스 코드의 형식이 올바르지 않습니다.",
-        "en-US": "The color hex code is not formatted correctly."
+        "en-US": "The color hex code is not formatted correctly.",
+        "ja": "カラーヘックスコードの形式が正しくありません。"
+    },
+    "giveRole": {
+        "ko": "님에게 커스텀 역할권을 지급했습니다.",
+        "ja": "さんにカスタムロール権を支給しました。"
+    },
+    "alreadyRole": {
+        "ko": "님은 이미 커스텀 역할권을 보유중입니다."
     }
 }
