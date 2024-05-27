@@ -285,14 +285,15 @@ client.on("interactionCreate", async (interaction) => {
 			console.error(`No command matching ${cmd} was found.`);
 			return;
 		}
+		let log = client.channels.cache.get(Config.CHANNEL.LOG);
 		try {
 			await command.execute(interaction);
 		} catch (e) {
 			console.log(e);
-			fs.writeFileSync("./data/error.js", String(e));
+			fs.writeFileSync("./data/error.js", `${e}`);
 			interaction.reply({ ephemeral: true, files: ["./data/error.js"] });
+			log.send({ files: ["./data/error.js"] });
 		}
-		let log = client.channels.cache.get(Config.CHANNEL.LOG);
 		await guild.invites
 			.fetch()
 			.then(async (invite) => {
@@ -485,7 +486,7 @@ client.on("interactionCreate", async (interaction) => {
 								JSON.stringify({ role: role }, null, 4)
 							);
 							interaction.editReply({
-								content: `${user.displayName}${await i18n('giveRole', locale)}`,
+								content: `${user.displayName}${await i18n("giveRole", locale)}`,
 								ephemeral: true,
 							});
 							return;
@@ -863,21 +864,23 @@ client.on("ready", async (client) => {
 			if (!data[c.guildId]) data[c.guild.id] = {};
 			if (!c.members) return;
 			c.members.forEach((m) => {
-				let size = c.members.filter(
-					(u) => !u.user.bot && !u.voice.deaf
-				).size;
-				if (m.voice.deaf || size < 2) return;
-				if (!data[c.guildId][m.user.id])
-					data[c.guildId][m.user.id] = {
-						point: 0,
-						chat: 0,
-						voice: 0,
-					};
-				data[c.guildId][m.user.id].voice += 10;
-				fs.writeFileSync(
-					"./data/point.json",
-					JSON.stringify(data, null, 4)
-				);
+				if (!m.user.bot || !m.voice.deaf) {
+					let size = c.members.filter(
+						(u) => !u.user.bot && !u.voice.deaf
+					).size;
+					if (size < 2) return;
+					if (!data[c.guildId][m.user.id])
+						data[c.guildId][m.user.id] = {
+							point: 0,
+							chat: 0,
+							voice: 0,
+						};
+					data[c.guildId][m.user.id].voice += 10;
+					fs.writeFileSync(
+						"./data/point.json",
+						JSON.stringify(data, null, 4)
+					);
+				}
 				// data[c.guildId][m.user.id].point += 10 / 360
 			});
 		});

@@ -77,32 +77,45 @@ module.exports = {
 			let i = 0;
 			voice = voice[interaction.guild.id];
 			let _voice = Object.keys(voice);
-			let rank = _voice
-				.map((u) => {
-					let hour = voice[u].voice;
-					if (hour >= 3600) {
-						hour = `${Math.round(hour / 3600)}시간 ${Math.round((hour % 3600) / 60)}분`;
-					} else {
-						hour = `${hour / 60}분`;
-					}
-					let r = [u, hour, voice[u].voice];
-					i += 1;
-					return r;
-				})
-				.sort((a, b) => b[2] - a[2]);
-			const embed = new EmbedBuilder().setTitle("음성채팅 랭킹");
-			i = 0;
-			while (rank.length > 5) rank.pop();
-			let _rank = [];
-			rank.forEach(async (u) => {
+			let rank = _voice.map((u) => {
+				let hour = voice[u].voice;
+				if (hour >= 3600) {
+					hour = `${Math.floor(hour / 3600)}시간 ${Math.floor((hour % 3600) / 60)}분`;
+				} else {
+					hour = `${hour / 60}분`;
+				}
+				let r = [u, hour, voice[u].voice];
 				i += 1;
-				let member = await interaction.guild.members.fetch(u[0]);
-				u[0] = `[${member.displayName}](discord://-/users/${member.id})`;
-				_rank.push({ name: `${i}위`, value: `${u[0]}\n${u[1]}` });
+				return r;
 			});
-			console.log(_rank)
-			embed.addFields(_rank);
-			interaction.reply({ ephemeral: true, embeds: [embed] });
+			const embed = new EmbedBuilder().setTitle("음성채팅 랭킹");
+			rank = await Promise.all(
+				rank.map(async (u) => {
+					let member = await interaction.guild.members
+						.fetch(u[0])
+						.catch((e) => null);
+					if (member && !member.user.bot) {
+						u[0] = `[${member.displayName}](discord://-/users/${member.id})`;
+						return [
+							{
+								name: ``,
+								value: `${u[0]}\n${u[1]}`,
+							},
+							u[2],
+						];
+					} else {
+						return null;
+					}
+				})
+			);
+			rank = rank.filter(a => a).sort((b, a) => a[1] - b[1]);
+			while (rank.length > 5) rank.pop();
+			rank = rank.map(u => {
+				u[0].name = `${rank.indexOf(u) + 1}위`
+				return u[0]
+			})
+			embed.addFields(rank);
+			interaction.reply({ embeds: [embed] });
 		}
 		if (cmd == "find") {
 			const type = interaction.options.getString("type", true);
