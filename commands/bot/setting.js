@@ -54,7 +54,7 @@ module.exports = {
 				} else {
 					interaction.reply({
 						ephemeral: true,
-						content: i18n('NotAdmin', locale)
+						content: await i18n('NotAdmin', locale)
 					})
 				}
 			}

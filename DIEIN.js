@@ -390,7 +390,7 @@ client.on("interactionCreate", async (interaction) => {
 			} else {
 				await interaction.reply({
 					ephemeral: true,
-					content: i18n("NotAdmin", locale),
+					content: await i18n("NotAdmin", locale),
 				});
 			}
 		} else if (interaction.customId === "qa") {
@@ -411,22 +411,22 @@ client.on("interactionCreate", async (interaction) => {
 					value: `[${user.id}](discord://-/users/${user.id})`,
 					inline: true,
 				});
-			console.log(i18n("reply", locale));
+			console.log(await i18n("reply", locale));
 			if (user.bannerURL()) embed.setImage(user.bannerURL());
 			let chan = client.channels.cache.get(Config.CHANNEL.QA);
 			let row = new ActionRowBuilder().addComponents(
 				new ButtonBuilder()
-					.setLabel(i18n("reply", locale))
+					.setLabel(await i18n("reply", locale))
 					.setCustomId("qa_reply")
 					.setStyle(1)
 			);
 			chan.send({
 				embeds: [embed],
 				components: [row],
-			}).then(() => {
+			}).then(async () => {
 				let row = new ActionRowBuilder().addComponents(
 					new ButtonBuilder()
-						.setLabel(i18n("edit", locale))
+						.setLabel(await i18n("edit", locale))
 						.setCustomId("qa_edit")
 						.setStyle(1)
 				);
@@ -631,9 +631,9 @@ client.on("interactionCreate", async (interaction) => {
 			Type[SEKAI.diff.gameCharacters] = "Character";
 			Type[SEKAI.diff.musics] = "Music";
 			let _ = new CMD();
-			function dating(cmd, data) {
+			async function dating(cmd, data) {
 				if (data == "down") {
-					interaction.reply(i18n("downloading", locale));
+					interaction.reply(await i18n("downloading", locale));
 					return;
 				}
 				let _data = data;
@@ -679,7 +679,7 @@ client.on("interactionCreate", async (interaction) => {
 				if (musics == "down") {
 					interaction.respond([
 						{
-							name: i18n("downloading", locale),
+							name: await i18n("downloading", locale),
 							value: "Tell Your World",
 						},
 					]);
@@ -807,7 +807,7 @@ client.on("interactionCreate", async (interaction) => {
 				if (Character.breast) {
 					embed.fields[embed.fields.length - 1] = {
 						inline: true,
-						name: i18n("BreastSize", locale),
+						name: await i18n("BreastSize", locale),
 						value: Character.breast,
 					};
 				}

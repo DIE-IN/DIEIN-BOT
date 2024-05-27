@@ -100,8 +100,9 @@ module.exports = {
 				u[0] = `[${member.displayName}](discord://-/users/${member.id})`;
 				_rank.push({ name: `${i}위`, value: `${u[0]}\n${u[1]}` });
 			});
+			console.log(_rank)
 			embed.addFields(_rank);
-			interaction.reply({ embeds: [embed] });
+			interaction.reply({ ephemeral: true, embeds: [embed] });
 		}
 		if (cmd == "find") {
 			const type = interaction.options.getString("type", true);
