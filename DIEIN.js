@@ -858,6 +858,10 @@ client.on("ready", async (client) => {
 			"1234001558665040004",
 			"1234001593071046667",
 			"1237080206167113748",
+			"1244574315492675585",
+			"1244574371805138974",
+			"1244574402591592478",
+			"1244574765898006638",
 		];
 		vc.forEach(async (c) => {
 			c = await client.channels.fetch(c);
@@ -869,13 +873,17 @@ client.on("ready", async (client) => {
 						(u) => !u.user.bot && !u.voice.deaf
 					).size;
 					if (size < 2) return;
-					if (!data[c.guildId][m.user.id])
+					if (!data[c.guildId][m.user.id]) {
 						data[c.guildId][m.user.id] = {
 							point: 0,
 							chat: 0,
 							voice: 0,
 						};
+					}
+					if (!data[c.guildId][m.user.id][c.name])
+						data[c.guildId][m.user.id][c.name] = 0;
 					data[c.guildId][m.user.id].voice += 10;
+					data[c.guildId][m.user.id][c.name] += 10;
 					fs.writeFileSync(
 						"./data/point.json",
 						JSON.stringify(data, null, 4)

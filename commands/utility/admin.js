@@ -57,13 +57,16 @@ module.exports = {
 						.setRequired(true)
 				)
 		)
-		.addSubcommand((op) => op.setName("test").setDescription("test")),
+		.addSubcommand((op) => op.setName("test").setDescription("test"))
+		.addSubcommand((op) => op.setName("test2").setDescription("test2"))
+		.addSubcommand((op) => op.setName("test3").setDescription("test3")),
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */
 	async execute(interaction) {
+		await interaction.deferReply()
 		if (!interaction.user.id === "596928010200809493") {
-			await interaction.reply({
+			await interaction.editReply({
 				ephemeral: true,
 				content: `관리자가 아닙니다.`,
 			});
@@ -108,14 +111,97 @@ module.exports = {
 					}
 				})
 			);
-			rank = rank.filter(a => a).sort((b, a) => a[1] - b[1]);
+			rank = rank.filter((a) => a).sort((b, a) => a[1] - b[1]);
 			while (rank.length > 5) rank.pop();
-			rank = rank.map(u => {
-				u[0].name = `${rank.indexOf(u) + 1}위`
-				return u[0]
-			})
+			rank = rank.map((u) => {
+				u[0].name = `${rank.indexOf(u) + 1}위`;
+				return u[0];
+			});
 			embed.addFields(rank);
-			interaction.reply({ embeds: [embed] });
+			await interaction.editReply({ embeds: [embed] });
+			return;
+		}
+		if (cmd == "test2") {
+			let chat = JSON.parse(
+				fs.readFileSync("data/point.json").toString()
+			);
+			let i = 0;
+			chat = chat[interaction.guild.id];
+			let _chat = Object.keys(chat);
+			let rank = _chat.map((u) => {
+				let c = chat[u].chat;
+				let r = [u, c];
+				i += 1;
+				return r;
+			});
+			const embed = new EmbedBuilder().setTitle("채팅 랭킹");
+			rank = await Promise.all(
+				rank.map(async (u) => {
+					let member = await interaction.guild.members
+						.fetch(u[0])
+						.catch((e) => null);
+					if (member && !member.user.bot) {
+						u[0] = `[${member.displayName}](discord://-/users/${member.id})`;
+						return [
+							{
+								name: ``,
+								value: `${u[0]}\n${u[1]}회`,
+							},
+							u[1],
+						];
+					} else {
+						return null;
+					}
+				})
+			);
+			rank = rank.filter((a) => a).sort((b, a) => a[1] - b[1]);
+			while (rank.length > 5) rank.pop();
+			rank = rank.map((u) => {
+				u[0].name = `${rank.indexOf(u) + 1}위`;
+				return u[0];
+			});
+			embed.addFields(rank);
+			await interaction.editReply({ embeds: [embed] });
+			return;
+		}
+		if (cmd == "test3") {
+			let chat = JSON.parse(
+				fs.readFileSync("data/point.json").toString()
+			);
+			chat = chat[interaction.guild.id];
+			let _chat = Object.keys(chat);
+			let rank = _chat
+				.map((u) => {
+					let c = Object.keys(chat[u]);
+					let v = {};
+					for (i = 3; i < c.length; i++) {
+						if (!v[`${c[i]}`]) v[`${c[i]}`] = 0;
+						v[`${c[i]}`] += chat[u][c[i]];
+					}
+					return v;
+				})
+				.filter((a) => Object.keys(a).length > 0);
+			let a = {};
+			for (x = 0; x < rank.length; x++) {
+				Object.keys(rank[x]).forEach((r) => {
+					if (!a[r]) a[r] = 0;
+					a[r] += rank[x][r];
+				});
+			}
+			console.log(a);
+
+			const embed = new EmbedBuilder().setTitle("음성방 랭킹");
+			rank = Object.keys(a).map((u) => {
+				if (a[u] >= 3600) {
+					a[u] = `${Math.floor(a[u] / 3600)}시간 ${Math.floor((a[u] % 3600) / 60)}분`;
+				} else {
+					a[u] = `${a[u] / 60}분`;
+				}
+				return { name: u, value: `${a[u]}` };
+			});
+			embed.addFields(rank);
+			await interaction.editReply({ embeds: [embed] });
+			return;
 		}
 		if (cmd == "find") {
 			const type = interaction.options.getString("type", true);
@@ -138,7 +224,7 @@ module.exports = {
 				embed.setThumbnail(result.avatarURL());
 			}
 			embed.setDescription(`Name: ${name} | ${result.id}${additional}`);
-			interaction.reply({
+			await interaction.editReply({
 				embeds: [embed],
 			});
 			return;
@@ -156,6 +242,7 @@ module.exports = {
 			modal.addComponents(
 				new ActionRowBuilder().addComponents(codeInput)
 			);
+			await interaction.deleteReply()
 			await interaction.showModal(modal);
 			return;
 		}

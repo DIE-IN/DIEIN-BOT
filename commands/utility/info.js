@@ -24,7 +24,7 @@ module.exports = {
 		const cpu = await si.cpu();
 		const graphic = (await si.graphics()).controllers[0];
 		//fetch(wakatime);
-		let embed = new EmbedBuilder().setTitle("다인봇 정보").addFields(
+		let embed = new EmbedBuilder().setTitle("푸리나봇 정보").addFields(
 			{
 				inline: true,
 				name: "프로그래밍 언어",
